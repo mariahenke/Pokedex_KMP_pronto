@@ -1,5 +1,6 @@
 package com.example.pokedex_kmp
 
+import com.example.pokedex_kmp.App // Adicione isso se o erro persistir
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent

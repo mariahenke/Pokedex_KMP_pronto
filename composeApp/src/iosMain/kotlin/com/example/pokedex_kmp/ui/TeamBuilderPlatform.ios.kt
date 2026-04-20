@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -29,13 +31,18 @@ import com.example.pokedex_kmp.ui.components.TypeChip
 actual fun TeamBuilderPlatformContent(
     team: List<Pokemon>,
     onRemovePokemon: (Int) -> Unit,
+    backIcon: ImageVector,
+    buttonShape: Shape
 ) {
-    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier.padding(16.dp)
+    ) {
         items(team, key = { it.id }) { pokemon ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .clip(RoundedCornerShape(22.dp))
+                    .clip(buttonShape)
                     .background(Color.White)
                     .padding(14.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -44,24 +51,31 @@ actual fun TeamBuilderPlatformContent(
                 Box(
                     modifier = Modifier
                         .weight(0.32f)
-                        .clip(RoundedCornerShape(18.dp))
+                        .clip(buttonShape)
                         .background(Color(0xFFF4F6FA))
                         .height(90.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     AsyncImage(model = pokemon.imageUrl, contentDescription = pokemon.name)
                 }
+
                 Column(
                     modifier = Modifier.weight(0.68f),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     Text(text = pokemon.name, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Medium)
                     Text(text = pokemon.id.formatPokemonNumber(), style = MaterialTheme.typography.labelMedium, color = Color.Gray)
+
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         pokemon.types.forEach { TypeChip(it) }
                     }
+
                     Text(text = pokemon.category, style = MaterialTheme.typography.bodyMedium, color = Color(0xFF5B6470))
-                    OutlinedButton(onClick = { onRemovePokemon(pokemon.id) }) {
+
+                    OutlinedButton(
+                        onClick = { onRemovePokemon(pokemon.id) },
+                        shape = buttonShape
+                    ) {
                         Text("Remover")
                     }
                 }
